@@ -1,12 +1,17 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.User;
 import com.example.demo.domain.dto.MyResponse;
 import com.example.demo.domain.dto.UserRequestDTO;
+import com.example.demo.domain.dto.UserResponseDTO;
 import com.example.demo.service.UserService;
 import com.example.demo.controller.validator.UserValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 // 1- It is a Bean
 // 2- It is a controller class  => GET, POST, PUT, DELETE
@@ -22,11 +27,24 @@ public class UserController {
     }
 
     // GET
-    @GetMapping("/users")
-    public ResponseEntity<MyResponse> getUser() {
+    @GetMapping("/users/{id}")
+    public ResponseEntity<MyResponse> getUser(@PathVariable(name = "id") Long id) {
         MyResponse mrs = new MyResponse();
+        try {
+            UserResponseDTO dto = service.getById(id);
+            mrs.setBody(dto);
+        } catch (Exception e) {
+            mrs.setErrorMessage("User not found!");
+        }
+        return new ResponseEntity(mrs, HttpStatus.OK);
+    }
 
-        mrs.setErrorMessage("User not found!");
+    // GET
+    @GetMapping("/users")
+    public ResponseEntity<MyResponse> getUsers() {
+        MyResponse mrs = new MyResponse();
+        List<User> users = service.getAll();
+        mrs.setBody(users);
         return new ResponseEntity(mrs, HttpStatus.OK);
     }
 
@@ -57,8 +75,9 @@ public class UserController {
 
     // DELETE
     @DeleteMapping("/users")
-    public ResponseEntity<MyResponse> deleteUser() {
+    public ResponseEntity<MyResponse> deleteUser(Long id) {
         MyResponse mrs = new MyResponse();
+//        mrs.setBody(service.delete(id));
 
         mrs.setBody("User successfully deleted!");
         return new ResponseEntity(mrs, HttpStatus.OK);

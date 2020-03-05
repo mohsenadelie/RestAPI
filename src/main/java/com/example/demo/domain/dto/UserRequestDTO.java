@@ -8,10 +8,10 @@ import java.time.LocalDate;
 public class UserRequestDTO {
     private String firstName;
     private String familyName;
-    private User.Gender gender;
+    private Gender gender;
     private LocalDate birthDate;
 
-    public UserRequestDTO(String firstName, String familyName, User.Gender gender, LocalDate birthDate) {
+    public UserRequestDTO(String firstName, String familyName, Gender gender, LocalDate birthDate) {
         this.firstName = firstName;
         this.familyName = familyName;
         this.gender = gender;
@@ -38,7 +38,7 @@ public class UserRequestDTO {
         return gender;
     }
 
-    public void setGender(User.Gender gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
